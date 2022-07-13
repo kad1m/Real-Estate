@@ -5,7 +5,6 @@
 __pycache__
 db.sqlite3
 mediafiles
-.env
 .DS_Store
 
 # Backup files #
@@ -29,7 +28,7 @@ mediafiles
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
+#.idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
@@ -97,7 +96,7 @@ celerybeat-schedule.*
 
 # SageMath parsed files
 *.sage.py
-
+../.idea
 # Environments
 .env
 .venv

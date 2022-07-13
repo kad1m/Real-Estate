@@ -27,13 +27,13 @@ class GetProfileAPIView(APIView):
     def get(self, request):
         user = self.request.user
         user_profile = Profile.objects.get(user=user)
-        serializer = ProfileSerializer(user_profile, context={'request': request})
+        serializer = ProfileSerializer(user_profile, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UpdateProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    renderer_classes =[ProfileJSONRenderer]
+    renderer_classes = [ProfileJSONRenderer]
 
     serializer_class = UpdateProfileSerializer
 
@@ -49,10 +49,8 @@ class UpdateProfileAPIView(APIView):
 
         data = request.data
         serializer = UpdateProfileSerializer(
-            instance=request.user.profile,
-            data=data,
-            partial=True
-            )
+            instance=request.user.profile, data=data, partial=True
+        )
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

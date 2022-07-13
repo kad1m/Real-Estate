@@ -17,8 +17,8 @@ class PropertyPublishedManager(models.Manager):
     def get_queryset(self):
         return (
             super(PropertyPublishedManager, self)
-                .get_queryset()
-                .filter(published_status=True)
+            .get_queryset()
+            .filter(published_status=True)
         )
 
 
@@ -36,13 +36,12 @@ class Property(TimeStampedUUIDModel):
         COMMERCIAL = "Commercial", _("Commercial")
         OTHER = "Other", _("Other")
 
-    user = (
-        models.ForeignKey(
-            User,
-            verbose_name=_("Agent,Seller or Buyer"),
-            related_name="agent_buyer",
-            on_delete=models.DO_NOTHING,
-        ))
+    user = models.ForeignKey(
+        User,
+        verbose_name=_("Agent,Seller or Buyer"),
+        related_name="agent_buyer",
+        on_delete=models.DO_NOTHING,
+    )
 
     title = models.CharField(verbose_name=_("Property Title"), max_length=250)
     slug = AutoSlugField(populate_from="title", unique=True, always_update=True)

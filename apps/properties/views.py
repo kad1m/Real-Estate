@@ -10,11 +10,8 @@ from rest_framework.views import APIView
 from .exceptions import PropertyNotFound
 from .models import Property, PropertyViews
 from .pagination import PropertyPagination
-from .serializers import (PropertySerializer,
-                          PropertyCreateSerializer,
-                          PropertyViewSerializer
-)
-
+from .serializers import (PropertyCreateSerializer, PropertySerializer,
+                          PropertyViewSerializer)
 
 logger = logging.getLogger(__name__)
 
@@ -22,49 +19,34 @@ logger = logging.getLogger(__name__)
 class PropertyFilter(django_filters.FilterSet):
 
     advert_type = django_filters.CharFilter(
-        field_name='advert_type',
-        lookup_expr='iexact'
+        field_name="advert_type", lookup_expr="iexact"
     )
 
     property_type = django_filters.CharFilter(
-        field_name='property_type',
-        lookup_expr='iexact'
+        field_name="property_type", lookup_expr="iexact"
     )
     price = django_filters.NumberFilter()
-    price__gt = django_filters.NumberFilter(
-        field_name='price',
-        lookup_expr='gt'
-    )
-    price__lt = django_filters.NumberFilter(
-        field_name='price',
-        lookup_expr='lt'
-    )
+    price__gt = django_filters.NumberFilter(field_name="price", lookup_expr="gt")
+    price__lt = django_filters.NumberFilter(field_name="price", lookup_expr="lt")
 
     class Meta:
         model = Property
-        fields = [
-            'advert_type',
-            'property_type',
-            'price'
-        ]
+        fields = ["advert_type", "property_type", "price"]
 
 
 class ListAllPropertiesAPIView(generics.ListAPIView):
     serializer_class = PropertySerializer
-    queryset = Property.objects.all().order_by('-created_at')
+    queryset = Property.objects.all().order_by("-created_at")
     pagination_class = PropertyPagination
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
-        filters.OrderingFilter
+        filters.OrderingFilter,
     ]
 
     filterset_class = PropertyFilter
-    search_fields = [
-        'country',
-        'city'
-    ]
-    ordering_fields = ['created_at']
+    search_fields = ["country", "city"]
+    ordering_fields = ["created_at"]
 
 
 class ListAgentsPropertiesAPIView(generics.ListAPIView):
@@ -73,18 +55,15 @@ class ListAgentsPropertiesAPIView(generics.ListAPIView):
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
-        filters.OrderingFilter
+        filters.OrderingFilter,
     ]
     filterset_class = PropertyFilter
-    search_fields = [
-        'country',
-        'city'
-    ]
-    ordering_fields = ['created_at']
+    search_fields = ["country", "city"]
+    ordering_fields = ["created_at"]
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Property.objects.filter(user=user).order_by('-created_at')
+        queryset = Property.objects.filter(user=user).order_by("-created_at")
         return queryset
 
 
@@ -97,11 +76,11 @@ class PropertyDetailView(APIView):
     def get(self, request, slug):
         property = Property.objects.get(slug=slug)
 
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDER_FOR')
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDER_FOR")
         if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
+            ip = x_forwarded_for.split(",")[0]
         else:
-            ip = request.META.get('REMOTE_ADDR')
+            ip = request.META.get("REMOTE_ADDR")
 
         if not PropertyViews.objects.filter(property=property, ip=ip).exists():
             PropertyViews.objects.create(property=property, ip=ip)
@@ -109,12 +88,12 @@ class PropertyDetailView(APIView):
             property.views += 1
             property.save()
 
-        serializer = PropertySerializer(property, context={'request': request})
+        serializer = PropertySerializer(property, context={"request": request})
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['PUT'])
+@api_view(["PUT"])
 @permission_classes([permissions.IsAuthenticated])
 def update_property_api_view(request, slug):
     try:
@@ -125,10 +104,11 @@ def update_property_api_view(request, slug):
     user = request.user
     if property.user != user:
         return Response(
-            {'error': 'You cant update or edit property that doesnt belong to you'}, status=status.HTTP_403_FORBIDDEN,
+            {"error": "You cant update or edit property that doesnt belong to you"},
+            status=status.HTTP_403_FORBIDDEN,
         )
 
-    if request.method == 'PUT':
+    if request.method == "PUT":
         data = request.data
         serializer = PropertySerializer(property, data, many=False)
         serializer.is_valid(raise_exception=True)
@@ -136,12 +116,12 @@ def update_property_api_view(request, slug):
         return Response(serializer.data)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def create_property_api_view(request):
     user = request.user
     data = request.data
-    data['user'] = request.user.pkid
+    data["user"] = request.user.pkid
     serializer = PropertyCreateSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -152,7 +132,7 @@ def create_property_api_view(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['DELETE'])
+@api_view(["DELETE"])
 @permission_classes([permissions.IsAuthenticated])
 def delete_property_api_view(request, slug):
     try:
@@ -164,31 +144,32 @@ def delete_property_api_view(request, slug):
 
     if property.user != user:
         return Response(
-            {'error': 'You cant delete property that doesnt belong to you'}, status=status.HTTP_403_FORBIDDEN,
+            {"error": "You cant delete property that doesnt belong to you"},
+            status=status.HTTP_403_FORBIDDEN,
         )
 
-    if request.method == 'DELETE':
+    if request.method == "DELETE":
         delete_operation = property.delete()
         data = {}
         if delete_operation:
-            data['success'] = 'Deletion was successful'
+            data["success"] = "Deletion was successful"
         else:
-            data['failure'] = 'Deletion failed'
+            data["failure"] = "Deletion failed"
         return Response(data=data)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def uploadPropertyImage(request) -> Response:
     data = request.data
-    property_id = data['property_id']
+    property_id = data["property_id"]
     property = Property.objects.get(id=property_id)
-    property.cover_photo = request.FILES.get('cover_photo')
-    property.photo1 = request.FILES.get('photo1')
-    property.photo2 = request.FILES.get('photo2')
-    property.photo3 = request.FILES.get('photo3')
-    property.photo4 = request.FILES.get('photo4')
+    property.cover_photo = request.FILES.get("cover_photo")
+    property.photo1 = request.FILES.get("photo1")
+    property.photo2 = request.FILES.get("photo2")
+    property.photo3 = request.FILES.get("photo3")
+    property.photo4 = request.FILES.get("photo4")
     property.save()
-    return Response('Image(s) uploaded')
+    return Response("Image(s) uploaded")
 
 
 class PropertySearchAPIView(APIView):
@@ -199,63 +180,63 @@ class PropertySearchAPIView(APIView):
         queryset = Property.objects.filter(published_status=True)
         data = self.request.data
 
-        advert_type = data['advert_type']
+        advert_type = data["advert_type"]
         queryset = queryset.filter(advert_type__iexact=advert_type)
 
-        property_type = data['property_type']
+        property_type = data["property_type"]
         queryset = queryset.filter(property_type_iexact=property_type)
 
-        price = data['price']
-        if price == '$0+':
+        price = data["price"]
+        if price == "$0+":
             price = 0
-        elif price == '$50,000+':
+        elif price == "$50,000+":
             price = 50000
-        elif price == '$100,000+':
+        elif price == "$100,000+":
             price = 100000
-        elif price == '$200,000+':
+        elif price == "$200,000+":
             price = 200000
-        elif price == '$400,000+':
+        elif price == "$400,000+":
             price = 400000
-        elif price == '$600,000+':
+        elif price == "$600,000+":
             price = 600000
-        elif price == 'Any':
+        elif price == "Any":
             price = -1
 
         if price != -1:
             queryset = queryset.filter(price__gte=price)
 
-        bedrooms = data['bedrooms']
-        if bedrooms == '0+':
+        bedrooms = data["bedrooms"]
+        if bedrooms == "0+":
             bedrooms = 0
-        elif bedrooms == '1+':
+        elif bedrooms == "1+":
             bedrooms = 1
-        elif bedrooms == '2+':
+        elif bedrooms == "2+":
             bedrooms = 2
-        elif bedrooms == '3+':
+        elif bedrooms == "3+":
             bedrooms = 3
-        elif bedrooms == '4+':
+        elif bedrooms == "4+":
             bedrooms = 4
-        elif bedrooms == '5+':
+        elif bedrooms == "5+":
             bedrooms = 5
 
         queryset = queryset.filter(bedrooms__gte=bedrooms)
 
-        bathrooms = data['bathrooms']
-        if bathrooms == '0+':
+        bathrooms = data["bathrooms"]
+        if bathrooms == "0+":
             bathrooms = 0.0
-        elif bathrooms == '1+':
+        elif bathrooms == "1+":
             bathrooms = 1.0
-        elif bathrooms == '2+':
+        elif bathrooms == "2+":
             bathrooms = 2.0
-        elif bathrooms == '3+':
+        elif bathrooms == "3+":
             bathrooms = 3.0
-        elif bathrooms == '4+':
+        elif bathrooms == "4+":
             bathrooms = 4.0
 
         queryset = queryset.filter(bathrooms__gte=bathrooms)
 
-        catch_phrase = data['catch_phrase']
-        queryset = queryset.filter(description__icontains =catch_phrase)
+        catch_phrase = data["catch_phrase"]
+        queryset = queryset.filter(description__icontains=catch_phrase)
 
         serializer = PropertySerializer(queryset, many=True)
 

@@ -4,11 +4,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from apps.profiles.models import Profile
+
 from .models import Rating
 
 User = get_user_model()
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def create_agent_review(request, profile_id):
     agent_profile = Profile.objects.get(id=profile_id, is_agent=True)
@@ -16,25 +18,27 @@ def create_agent_review(request, profile_id):
 
     profile_user = User.objects.get(pkid=agent_profile.user.pkid)
     if profile_user.email == request.user.email:
-        fromatted_response = {'message': 'You cant rate yourself'}
+        fromatted_response = {"message": "You cant rate yourself"}
         return Response(fromatted_response, status=status.HTTP_403_FORBIDDEN)
 
-    alreadyExists = agent_profile.agent_review.filter(agent__pkid=profile_user.pkid).exists()
+    alreadyExists = agent_profile.agent_review.filter(
+        agent__pkid=profile_user.pkid
+    ).exists()
 
     if alreadyExists:
-        formatted_response = {'detail': 'Profile already reviewed'}
+        formatted_response = {"detail": "Profile already reviewed"}
         return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
 
-    elif data['rating'] == 0:
-        formatted_response = {'detail': 'Profile select a rating'}
+    elif data["rating"] == 0:
+        formatted_response = {"detail": "Profile select a rating"}
         return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
 
     else:
         review = Rating.objects.create(
             rater=request.user,
             agent=agent_profile,
-            rating=data['rating'],
-            comment=data['comment'],
+            rating=data["rating"],
+            comment=data["comment"],
         )
         reviews = agent_profile.agent_review.all()
         agent_profile.num_reviews = len(reviews)
@@ -43,5 +47,4 @@ def create_agent_review(request, profile_id):
         for i in reviews:
             total += i.rating
 
-        return Response('Review Added')
-
+        return Response("Review Added")
