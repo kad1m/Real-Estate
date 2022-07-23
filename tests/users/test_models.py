@@ -45,7 +45,7 @@ def test_super_user_is_not_superuser(user_factory):
 
 
 def test_create_user_with_no_email(user_factory):
-    """Test that creating a new user with no email address"""
+    """Test that creating a new user with no email"""
     with pytest.raises(ValueError) as err:
         user_factory.create(email=None)
     assert str(err.value) == "Base User Account: An email address is required"
