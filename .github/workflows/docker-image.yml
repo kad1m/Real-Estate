@@ -10,6 +10,7 @@ jobs:
    test-app:
      runs-on: ubuntu-latest
      steps:
+       - uses: actions/checkout@v3
        - name: Make envfile
          uses: SpicyPizza/create-envfile@v1.3
          with:
@@ -29,7 +30,5 @@ jobs:
           envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
           envkey_DOMAIN: ${{ secrets.DOMAIN }}
           file_name: .env
-          directory: ./../../
           fail_on_empty: false
-       - uses: actions/checkout@v3
        - run : docker compose up --build -d --remove-orphans
