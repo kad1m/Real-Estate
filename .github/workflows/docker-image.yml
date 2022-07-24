@@ -7,30 +7,28 @@ on:
     branches: [ "master" ]
 
 jobs:
-
-  BUILD:
- 
-    runs-on: ubuntu-latest
-    env:         
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DEBUG: ${{ secrets.DEBUG }}
-        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-        PG_ENGINE: ${{ secrets.PG_ENGINE }}
-        PG_DB: ${{ secrets.PG_DB }}
-        PG_USER: ${{ secrets.PG_USER }}
-        PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-        PG_HOST: ${{ secrets.PG_HOST }}
-        PG_PORT: ${{ secrets.PG_PORT }}
-        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-        EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-        EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-        DOMAIN: ${{ secrets.DOMAIN }}
- 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker compose up --build -d --remove-orphans
-  
- 
+   test-app:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Make envfile
+         uses: SpicyPizza/create-envfile@v1.3
+         with:
+          envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          envkey_DEBUG: ${{ secrets.DEBUG }}
+          envkey_ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+          envkey_PG_ENGINE: ${{ secrets.PG_ENGINE }}
+          envkey_PG_DB: ${{ secrets.PG_DB }}
+          envkey_PG_USER: ${{ secrets.PG_USER }}
+          envkey_PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          envkey_PG_HOST: ${{ secrets.PG_HOST }}
+          envkey_PG_PORT: ${{ secrets.PG_PORT }}
+          envkey_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          envkey_EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+          envkey_EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+          envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+          envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+          envkey_DOMAIN: ${{ secrets.DOMAIN }}
+          file_name: .env
+          fail_on_empty: false
+       - uses: actions/checkout@v3
+       - run : docker compose up --build -d --remove-orphans
