@@ -2,9 +2,9 @@ name: Docker Build
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ dev ]
+    branches: [ "dev" ]
 
 jobs:
 
@@ -18,5 +18,3 @@ jobs:
     - name: Starting Build Message
       run: echo "Start build"
       
-    - name: Build the Docker image
-      run: docker compose up --build -d --remove-orphans
