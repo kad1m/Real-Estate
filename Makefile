@@ -27,7 +27,7 @@ superuser:
 	docker compose exec api python3 manage.py createsuperuser
 
 collectstatic:
-	docker compose exe api python3 manage.py collectstatic --no-input --clear
+	docker compose exec api python3 manage.py collectstatic --no-input --clear
 
 down-v:
 	docker compose down -v
