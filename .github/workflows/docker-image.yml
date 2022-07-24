@@ -29,6 +29,7 @@ jobs:
           envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
           envkey_DOMAIN: ${{ secrets.DOMAIN }}
           file_name: .env
+          directory: ./../../
           fail_on_empty: false
        - uses: actions/checkout@v3
        - run : docker compose up --build -d --remove-orphans
