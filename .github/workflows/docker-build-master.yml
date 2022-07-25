@@ -29,6 +29,8 @@ jobs:
           envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
           envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
           envkey_DOMAIN: ${{ secrets.DOMAIN }}
+          envkey_CELERY_BACKEND: ${{secrets.CELERY_BACKEND}}
+          envkey_CELERY_BROKER: ${{secrets.CELERY_BROKER}}
           file_name: .env
           fail_on_empty: false
        - run : docker compose up --build -d --remove-orphans
