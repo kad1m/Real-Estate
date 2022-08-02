@@ -4,12 +4,11 @@ import {Helmet} from "react-helmet";
 const Title = ({title, description, keywords}) => {
     return (
         <Helmet>
-            <Title>
-                {title}
+
+                <title>{title}</title>
                 <meta name="description" content={description}/>
                 <meta name="keywords" content={keywords}/>
 
-            </Title>
         </Helmet>
     );
 };
