@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import PropertiesPage from './pages/PropertiesPage'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import NotFoudPage from "./pages/NotFoudPage";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                             path="/properties"
                             element={<PropertiesPage/>}
                         />
+                        <Route path="*" element={<NotFoudPage/>}/>
                     </Routes>
                     <ToastContainer theme="dark"/>
                 </main>
