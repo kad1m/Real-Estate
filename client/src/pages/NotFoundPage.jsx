@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NotFoudPage = () => {
+const NotFoundPage = () => {
     return (
         <div className="mt-5">
             404 page not found...
@@ -8,4 +8,4 @@ const NotFoudPage = () => {
     );
 };
 
-export default NotFoudPage;
+export default NotFoundPage;
