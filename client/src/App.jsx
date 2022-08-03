@@ -7,6 +7,7 @@ import PropertiesPage from './pages/PropertiesPage'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
     return (
@@ -16,10 +17,12 @@ const App = () => {
                 <main className="py-3">
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
+
                         <Route
                             path="/properties"
                             element={<PropertiesPage/>}
                         />
+                        <Route path="/login" element={<LoginPage/>}/>
                         <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>
                     <ToastContainer theme="dark"/>
