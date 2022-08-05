@@ -36,7 +36,7 @@ jobs:
       - name: going to client folder
         run: ls -l
       - name: going to client folder
-        run: cd ../../client
+        run: cd client
       - name: going to client folder
         run: ls -l
       
