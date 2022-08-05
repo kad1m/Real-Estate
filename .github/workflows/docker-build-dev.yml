@@ -40,7 +40,7 @@ jobs:
         with:
           envkey_WDS_SOCKET_PORT: ${{ secrets.WDS_SOCKET_PORT }}
           file_name: .env
-          directory: client
+          directory: ./../../client
           fail_on_empty: false
      # - name: build docker
         #run: docker compose up --build -d --remove-orphans
