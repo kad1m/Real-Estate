@@ -13,37 +13,38 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          envkey_DEBUG: ${{ secrets.DEBUG }}
-          envkey_ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-          envkey_PG_ENGINE: ${{ secrets.PG_ENGINE }}
-          envkey_PG_DB: ${{ secrets.PG_DB }}
-          envkey_PG_USER: ${{ secrets.PG_USER }}
-          envkey_PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          envkey_PG_HOST: ${{ secrets.PG_HOST }}
-          envkey_PG_PORT: ${{ secrets.PG_PORT }}
-          envkey_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          envkey_EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-          envkey_EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-          envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-          envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-          envkey_DOMAIN: ${{ secrets.DOMAIN }}
-          envkey_CELERY_BACKEND: ${{secrets.CELERY_BACKEND}}
-          envkey_CELERY_BROKER: ${{secrets.CELERY_BROKER}}
-          file_name: .env
-          fail_on_empty: false   
-      - name: cd
+        run: |
+          pwd
+          touch .env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+          echo DEBUG=${{ secrets.DEBUG }}
+          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}
+          echo PG_ENGINE=${{ secrets.PG_ENGINE }}
+          echo PG_DB=${{ secrets.PG_DB }}
+          echo PG_USER=${{ secrets.PG_USER }}
+          echo PG_PASSWORD=${{ secrets.PG_PASSWORD }}
+          echo PG_HOST=${{ secrets.PG_HOST }}
+          echo PG_PORT=${{ secrets.PG_PORT }}
+          echo SIGNING_KEY=${{ secrets.SIGNING_KEY }}
+          echo EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+          echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}
+          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
+          echo EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+          echo DOMAIN=${{ secrets.DOMAIN }}
+          echo CELERY_BACKEND=${{secrets.CELERY_BACKEND}}
+          echo CELERY_BROKER=${{secrets.CELERY_BROKER}}
+          cat .env
+          pwd
+          ls -l 
+      - name: Make envfile in client folder
         run: |
           pwd
           cd ./client
+          ls -l 
+          touch .env
+          echo WDS_SOCKET_PORT=${{ secrets.WDS_SOCKET_PORT }} >> .env
+          cat .env
           pwd
-      - name: Make envfile in client folder
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_WDS_SOCKET_PORT: ${{ secrets.WDS_SOCKET_PORT }}
-          file_name: .env
-          fail_on_empty: false
+          ls -l 
      # - name: build docker
         #run: docker compose up --build -d --remove-orphans
