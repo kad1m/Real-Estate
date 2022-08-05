@@ -91,5 +91,3 @@ def test_create_user_with_incorrect_email(user_factory):
     with pytest.raises(ValueError) as err:
         user_factory.create(email="realestate.com")
     assert str(err.value) == "You must provide a valid email"
-
-"""Doc string"""
