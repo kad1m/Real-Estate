@@ -37,7 +37,7 @@ jobs:
       - name: cd
         run: |
           pwd
-          cd ../../
+          cd ./client
           pwd
       - name: Make envfile in client folder
         uses: SpicyPizza/create-envfile@v1.3
