@@ -52,5 +52,5 @@ jobs:
           echo -----------------------
           pwd
           ls -a
-     # - name: build docker
-        #run: docker compose up --build -d --remove-orphans
+      - name: build docker
+        run: docker compose up --build -d --remove-orphans
