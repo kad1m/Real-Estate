@@ -35,6 +35,11 @@ jobs:
           fail_on_empty: false
       - name: going to client folder
         run: ls -l
+      - name: going to client folder
+        run: cd ../../client
+      - name: going to client folder
+        run: ls -l
+      
       - name: Make envfile in client folder
         uses: SpicyPizza/create-envfile@v1.3
         with:
