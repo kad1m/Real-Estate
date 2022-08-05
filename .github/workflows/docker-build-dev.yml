@@ -16,6 +16,7 @@ jobs:
         run: |
           pwd
           ls -a
+          echo -----------------------
           touch .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
           echo DEBUG=${{ secrets.DEBUG }} >> .env
@@ -34,6 +35,7 @@ jobs:
           echo DOMAIN=${{ secrets.DOMAIN }} >> .env
           echo CELERY_BACKEND=${{secrets.CELERY_BACKEND}} >> .env
           echo CELERY_BROKER=${{secrets.CELERY_BROKER}} >> .env
+          echo -----------------------
           cat .env
           pwd
           ls -a 
@@ -41,11 +43,14 @@ jobs:
         run: |
           pwd
           cd ./client
-          ls -l 
+          ls -a 
+          echo -----------------------
           touch .env
           echo WDS_SOCKET_PORT=${{ secrets.WDS_SOCKET_PORT }} >> .env
+          echo -----------------------
           cat .env
+          echo -----------------------
           pwd
-          ls -l 
+          ls -a
      # - name: build docker
         #run: docker compose up --build -d --remove-orphans
