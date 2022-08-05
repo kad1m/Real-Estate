@@ -33,4 +33,13 @@ jobs:
           envkey_CELERY_BROKER: ${{secrets.CELERY_BROKER}}
           file_name: .env
           fail_on_empty: false
-       - run : docker compose up --build -d --remove-orphans
+       - name : going to client folder
+         run: cd client
+       - name: Make envfile in client folder
+         uses: SpicyPizza/create-envfile@v1.3
+        with:
+         envkey_WDS_SOCKET_PORT: ${{ secrets.WDS_SOCKET_PORT }}
+         file_name: .env
+         fail_on_empty: false
+       - name: build docker
+         run: docker compose up --build -d --remove-orphans
