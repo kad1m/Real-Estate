@@ -9,7 +9,6 @@ on:
 jobs:
   docker-build-dev:
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v3
       - name: Make envfile
@@ -38,7 +37,7 @@ jobs:
           echo -----------------------
           cat .env
           pwd
-          ls -a 
+          ls -a
       - name: Make envfile in client folder
         run: |
           pwd
