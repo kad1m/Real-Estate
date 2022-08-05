@@ -15,27 +15,28 @@ jobs:
       - name: Make envfile
         run: |
           pwd
+          ls -a
           touch .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo DEBUG=${{ secrets.DEBUG }}
-          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}
-          echo PG_ENGINE=${{ secrets.PG_ENGINE }}
-          echo PG_DB=${{ secrets.PG_DB }}
-          echo PG_USER=${{ secrets.PG_USER }}
-          echo PG_PASSWORD=${{ secrets.PG_PASSWORD }}
-          echo PG_HOST=${{ secrets.PG_HOST }}
-          echo PG_PORT=${{ secrets.PG_PORT }}
-          echo SIGNING_KEY=${{ secrets.SIGNING_KEY }}
-          echo EMAIL_HOST=${{ secrets.EMAIL_HOST }}
-          echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}
-          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
-          echo EMAIL_PORT=${{ secrets.EMAIL_PORT }}
-          echo DOMAIN=${{ secrets.DOMAIN }}
-          echo CELERY_BACKEND=${{secrets.CELERY_BACKEND}}
-          echo CELERY_BROKER=${{secrets.CELERY_BROKER}}
+          echo DEBUG=${{ secrets.DEBUG }} >> .env
+          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+          echo PG_ENGINE=${{ secrets.PG_ENGINE }} >> .env
+          echo PG_DB=${{ secrets.PG_DB }} >> .env
+          echo PG_USER=${{ secrets.PG_USER }} >> .env
+          echo PG_PASSWORD=${{ secrets.PG_PASSWORD }} >> .env
+          echo PG_HOST=${{ secrets.PG_HOST }} >> .env
+          echo PG_PORT=${{ secrets.PG_PORT }} >> .env
+          echo SIGNING_KEY=${{ secrets.SIGNING_KEY }} >> .env
+          echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .env
+          echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }} >> .env
+          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .env
+          echo EMAIL_PORT=${{ secrets.EMAIL_PORT }} >> .env
+          echo DOMAIN=${{ secrets.DOMAIN }} >> .env
+          echo CELERY_BACKEND=${{secrets.CELERY_BACKEND}} >> .env
+          echo CELERY_BROKER=${{secrets.CELERY_BROKER}} >> .env
           cat .env
           pwd
-          ls -l 
+          ls -a 
       - name: Make envfile in client folder
         run: |
           pwd
