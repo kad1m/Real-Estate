@@ -57,7 +57,7 @@ const RegisterPage = () => {
 	};
 	return (
 		<>
-			<Title title="Register" />
+			<Title title="Register"/>
 			<Container>
 				<Row>
 					<Col className="mg-top text-center">

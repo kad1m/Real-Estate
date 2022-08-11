@@ -14,6 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField(read_only=True)
     country = CountryField(name_only=True)
     reviews = serializers.SerializerMethodField(read_only=True)
+    profile_photo = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -54,6 +55,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         if instance.top_agent:
             representation["top_agent"] = True
         return representation
+
+    def get_profile_photo(self, obj):
+        return obj.user.profile.profile_photo.url
 
 
 class UpdateProfileSerializer(serializers.ModelSerializer):

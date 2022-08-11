@@ -6,16 +6,15 @@ import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import Spinner from "../components/Spinner";
 import Title from "../components/Title";
-import {login, reset} from "../features/auth/authSlice";
+import {reset, reset_password} from "../features/auth/authSlice";
 
-const LoginPage = () => {
+const ResetPasswordPage = () => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const {user, isLoading, isError, isSuccess, message} = useSelector(
+    const {isLoading, isError, isSuccess, message} = useSelector(
         (state) => state.auth
     );
 
@@ -24,12 +23,13 @@ const LoginPage = () => {
             toast.error(message);
         }
 
-        if (isSuccess || user) {
+        if (isSuccess) {
             navigate("/");
+            toast.success("On your email address send link to change password")
         }
 
         dispatch(reset());
-    }, [isError, isSuccess, message, user, navigate, dispatch]);
+    }, [isError, isSuccess, message, navigate, dispatch]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -37,27 +37,22 @@ const LoginPage = () => {
             toast.error("An email must be provided");
         }
 
-        if (!password) {
-            toast.error("A password must be provided");
-        }
-
         const userData = {
-            email,
-            password,
+            email
         };
 
-        dispatch(login(userData));
+        dispatch(reset_password(userData));
     };
 
     return (
         <>
-            <Title title="login"/>
+            <Title title="Reset password"/>
             <Container>
                 <Row>
                     <Col className="mg-top text-center">
                         <section>
                             <h1>
-                                <FaSignInAlt/> Login
+                                <FaSignInAlt/> Reset Password
                             </h1>
                             <hr className="hr-text"/>
                         </section>
@@ -77,41 +72,20 @@ const LoginPage = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Form.Group>
-
-                            <Form.Group controlId="password">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Enter Password"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                />
-                            </Form.Group>
-
                             <Button
                                 type="submit"
                                 variant="primary"
                                 className="mt-3"
                             >
-                                Sign In
+                                Reset password
                             </Button>
                         </Form>
                     </Col>
                 </Row>
 
-                <Row className="py-3">
-                    <Col>
-                        Forgot password?
-                        <Link to="/reset_password">Reset Here.</Link> /
-                        New Customer?
-                        <Link to="/register">Register Here...</Link>
-                    </Col>
-                </Row>
             </Container>
         </>
     );
 };
 
-export default LoginPage;
+export default ResetPasswordPage;
