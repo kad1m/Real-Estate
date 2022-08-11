@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { logout, reset } from "../features/auth/authSlice";
+import { reset as reset_profile }  from "../features/profile/profileSlice";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Header = () => {
 	const logoutHandler = () => {
 		dispatch(logout());
 		dispatch(reset());
+		dispatch(reset_profile());
 		navigate("/");
 	};
 	return (
@@ -49,13 +51,13 @@ const Header = () => {
 							{user ? (
 								<NavDropdown
 									title={
-										user.firstName
-											? user.firstName
+										user.first_name
+											? user.first_name
 											: "Welcome"
 									}
 									id="username"
 								>
-									<LinkContainer to="/profile">
+									<LinkContainer to="/profile/me">
 										<NavDropdown.Item>
 											Profile
 										</NavDropdown.Item>
